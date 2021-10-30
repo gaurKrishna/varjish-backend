@@ -13,6 +13,7 @@ whitenoise = "*"
 django-cors-headers = "*"
 django-heroku = "*"
 pillow = "*"
+python-decouple = "*"
 
 [dev-packages]
 
