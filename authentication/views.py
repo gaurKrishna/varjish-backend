@@ -67,7 +67,7 @@ class LoginAPI(APIView):
                 {
                     "status": "User logged in successfully", 
                     "Token": token.key,
-                    "user_details": 
+                    "user_details": user_data
                 },
                 status=status.HTTP_200_OK
             )
