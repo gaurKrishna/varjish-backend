@@ -22,10 +22,10 @@ class TrainerSerializer(ModelSerializer):
 
 class TraineeSieralizer(ModelSerializer):
     class Meta:
-        models = Trainee
+        model = Trainee
         fields = "__all__"
 
 class DietAndWorkOutSerializer(ModelSerializer):
     class Meta:
-        models = DietAndWorkout
+        model = DietAndWorkout
         fields = "__all__"
