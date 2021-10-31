@@ -6,7 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["firstname", "lastname", "email", "password", "role", "contact_number", "profile"]
-        read_only_fields = ("profile")
+        read_only_fields = ["profile"]
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255)
