@@ -1,3 +1,4 @@
+from rest_framework import permissions
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
@@ -60,11 +61,13 @@ class LoginAPI(APIView):
 
         token, key = Token.objects.get_or_create(user=user)
 
+        user_data = UserSerializer(user).data
+
         return Response(
                 {
                     "status": "User logged in successfully", 
                     "Token": token.key,
-                    "role": user.role
+                    "user_details": 
                 },
                 status=status.HTTP_200_OK
             )
@@ -82,4 +85,3 @@ class LogoutApi(APIView):
         logout(request)
 
         return Response({"status": "User logged out successfully"}, status=status.HTTP_200_OK)
-
