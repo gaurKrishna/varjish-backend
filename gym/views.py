@@ -63,7 +63,7 @@ class TraineeViewSet(ModelViewSet):
         try:
             trainee = Trainee.objects.get(gym=gym, user=user, trainer=trainer)
             return Response({"error": "Trainee already exist"}, status=status.HTTP_400_BAD_REQUEST)
-        except Trainer.DoesNotExist:    
+        except Trainee.DoesNotExist:    
             trainee = Trainee(**data)
             trainee.save()
             trainee_data = TraineeSieralizer(trainee).data 
