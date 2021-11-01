@@ -75,11 +75,11 @@ class TrainerByGym(APIView):
         if gym_id:
             gym = Gym.objects.get(id=gym_id)
             trainers = Trainer.objects.filter(gym=gym)
-            users = []
+            response_data = []
             for trainer in trainers:
-                users.append(trainer.user)
-
-            response_data = UserSerializer(users, many=True, context={"request": request}).data
+                user_data = UserSerializer(trainer.user, context={"request": request}).data
+                user_data["trainer"] = trainer.id
+                response_data.append(user_data)
 
             return Response(response_data, status=status.HTTP_200_OK)
         else:
@@ -93,10 +93,10 @@ class MyTrainees(APIView):
         trainer = Trainer.objects.get(user=request.user)
         trainees = Trainee.objects.filter(trainer = trainer)
 
-        users = []
+        response_data = []
         for trainee in trainees:
-            users.append(trainee.user)
-
-        response_data = UserSerializer(users, many=True, context={"request": request}).data
+            user_data = UserSerializer(trainee.user, context={"request": request}).data
+            user_data["trainee"] = trainee.id
+            response_data.append(user_data)
 
         return Response(response_data, status=status.HTTP_200_OK)  
