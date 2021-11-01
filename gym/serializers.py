@@ -29,3 +29,9 @@ class DietAndWorkOutSerializer(ModelSerializer):
     class Meta:
         model = DietAndWorkout
         fields = "__all__"
+
+class TrainerDepthSerializer(ModelSerializer):
+    class Meta:
+        model = Trainer
+        fields = "__all__"
+        depth = 1

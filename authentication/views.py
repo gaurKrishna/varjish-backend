@@ -20,8 +20,8 @@ class SignUpAPI(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors)
 
-        first_name = serializer.validated_data.get("first_name", None)
-        last_name = serializer.validated_data.get("last_name", None)
+        first_name = serializer.validated_data.get("firstname", None)
+        last_name = serializer.validated_data.get("lastname", None)
         contact_number = serializer.validated_data.get("contact_number", None)
 
         if first_name == None:

@@ -13,4 +13,4 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=68, min_length=7)
     
     class Meta:
-        fields = ["eamil", "password"]
+        fields = ["email", "password"]
