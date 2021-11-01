@@ -97,6 +97,7 @@ class MyTrainees(APIView):
         for trainee in trainees:
             user_data = UserSerializer(trainee.user, context={"request": request}).data
             user_data["trainee"] = trainee.id
+            user_data["trainer"] = trainer.id
             response_data.append(user_data)
 
         return Response(response_data, status=status.HTTP_200_OK)  
