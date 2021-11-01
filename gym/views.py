@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+
+from authentication.models import User
 from .models import (
     Gym,
     Trainee,
@@ -70,8 +72,12 @@ class TrainerByGym(APIView):
 
         if gym_id:
             gym = Gym.objects.get(id=gym_id)
-            user_trainers = Trainer.objects.filter(gym=gym).values_list("user", flat=True)
-            response_data = UserSerializer(user_trainers).data
+            trainers = Trainer.objects.filter(gym=gym)
+            users = []
+            for trainer in trainers:
+                users.append(trainer.user)
+
+            response_data = UserSerializer(users, many=True).data
 
             return Response(response_data, status=status.HTTP_200_OK)
         else:
@@ -83,7 +89,12 @@ class MyTrainees(APIView):
     def get(self, request, *args, **kwargs):
 
         trainer = Trainer.objects.get(user=request.user)
-        user = Trainee.objects.filter(trainer = trainer).values_list("user", flat=True)
-        response_data = UserSerializer(user, many=True).data
+        trainees = Trainee.objects.filter(trainer = trainer)
+
+        users = []
+        for trainee in trainees:
+            users.append(trainee.user)
+
+        response_data = UserSerializer(users, many=True).data
 
         return Response(response_data, status=status.HTTP_200_OK)  
