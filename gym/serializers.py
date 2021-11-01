@@ -24,6 +24,7 @@ class TraineeSieralizer(ModelSerializer):
     class Meta:
         model = Trainee
         fields = "__all__"
+        read_only_fields = ["user"]
 
 class DietAndWorkOutSerializer(ModelSerializer):
     class Meta:

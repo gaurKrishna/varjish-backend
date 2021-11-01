@@ -39,7 +39,7 @@ class TrainerViewset(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         response_data = self.get_serializer(instance).data
-        user_data = UserSerializer(instance.user).data
+        user_data = UserSerializer(instance.user, context={"request": request}).data
         response_data = {**response_data, **user_data}
         return Response(response_data, status=status.HTTP_200_OK)
 
@@ -48,6 +48,19 @@ class TraineeViewSet(ModelViewSet):
     serializer_class = TraineeSieralizer
     permission_classes = [IsAuthenticated]
     http_method_name = ['get', 'post']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        data = serializer.validated_data
+        data["user"] = request.user
+
+        trainee = Trainee(**data)
+        trainee.save()
+        trainee_data = TraineeSieralizer(trainee).data 
+
+        return Response(trainee_data, status=status.HTTP_200_OK)
 
 class DietAndWorkoutViewSet(ModelViewSet):
     queryset = DietAndWorkout.objects.all()
