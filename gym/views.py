@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.parsers import MultiPartParser
 
 from authentication.models import User
 from .models import (
@@ -46,6 +47,7 @@ class DietAndWorkoutViewSet(ModelViewSet):
     serializer_class = DietAndWorkOutSerializer
     permissions_classes = [IsAuthenticated]
     http_method_name = ['get', 'post']
+    parser_classes = (MultiPartParser, )
 
 class MyDietAndWorkout(APIView):
     permission_classes = [IsAuthenticated]
