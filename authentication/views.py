@@ -1,3 +1,4 @@
+from rest_framework.parsers import MultiPartParser
 from rest_framework import permissions
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.serializers import Serializer
@@ -13,12 +14,16 @@ from .serializers import LoginSerializer, UserSerializer
 
 class SignUpAPI(APIView):
     permission_classes = [AllowAny]
+    parser_classes = (MultiPartParser, )
 
     def post(self, request):
+        print(request.data)
         serializer = UserSerializer(data=request.data)
 
         if not serializer.is_valid():
             return Response(serializer.errors)
+
+        print(serializer.data)
 
         first_name = serializer.validated_data.get("firstname", None)
         last_name = serializer.validated_data.get("lastname", None)

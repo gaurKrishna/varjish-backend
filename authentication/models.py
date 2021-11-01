@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, role, password, firstname = None, lastname = None, contact_number = None):
+    def create_user(self, email, role, password, firstname = None, lastname = None, contact_number = None, profile = None):
         if email is None:
             raise TypeError("Email address is required to create user")
 
@@ -16,8 +16,11 @@ class UserManager(BaseUserManager):
             role = role,
             firstname = firstname, 
             lastname = lastname, 
-            contact_number = contact_number
+            contact_number = contact_number,
+            profile = profile
         )
+
+        print(profile)
 
         user.set_password(password)
         user.save(using=self._db)

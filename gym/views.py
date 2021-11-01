@@ -71,10 +71,7 @@ class TrainerByGym(APIView):
         if gym_id:
             gym = Gym.objects.get(id=gym_id)
             user_trainers = Trainer.objects.filter(gym=gym).values_list("user", flat=True)
-            print(user_trainers)
-            print()
-            print()
-            response_data = UserSerializer(user_trainers, many=True).data
+            response_data = UserSerializer(user_trainers).data
 
             return Response(response_data, status=status.HTTP_200_OK)
         else:

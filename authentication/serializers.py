@@ -6,11 +6,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["firstname", "lastname", "email", "password", "role", "contact_number", "profile"]
-        read_only_fields = ["profile"]
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255)
     password = serializers.CharField(max_length=68, min_length=7)
     
     class Meta:
-        fields = ["email", "password"]
+        fields = ["emil", "password"]
