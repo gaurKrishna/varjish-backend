@@ -63,7 +63,7 @@ class LoginAPI(APIView):
 
         token, key = Token.objects.get_or_create(user=user)
 
-        user_data = UserSerializer(user).data
+        user_data = UserSerializer(user, context={"request": request}).data
 
         return Response(
                 {

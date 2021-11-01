@@ -57,7 +57,7 @@ class MyDietAndWorkout(APIView):
 
         diet_workout = DietAndWorkout.objects.get(trainee=trainee)
 
-        response_data = DietAndWorkOutSerializer(diet_workout).data
+        response_data = DietAndWorkOutSerializer(diet_workout, context={"request": request}).data
 
         response_data["Trainer_name"] = diet_workout.trainer.user.firstname + " " + diet_workout.trainer.user.lastname
 
@@ -77,7 +77,7 @@ class TrainerByGym(APIView):
             for trainer in trainers:
                 users.append(trainer.user)
 
-            response_data = UserSerializer(users, many=True).data
+            response_data = UserSerializer(users, many=True, context={"request": request}).data
 
             return Response(response_data, status=status.HTTP_200_OK)
         else:
@@ -95,6 +95,6 @@ class MyTrainees(APIView):
         for trainee in trainees:
             users.append(trainee.user)
 
-        response_data = UserSerializer(users, many=True).data
+        response_data = UserSerializer(users, many=True, context={"request": request}).data
 
         return Response(response_data, status=status.HTTP_200_OK)  
