@@ -56,11 +56,19 @@ class TraineeViewSet(ModelViewSet):
         data = serializer.validated_data
         data["user"] = request.user
 
-        trainee = Trainee(**data)
-        trainee.save()
-        trainee_data = TraineeSieralizer(trainee).data 
+        gym = data["gym"]
+        trainer = data["trainer"]
+        user = request.user
 
-        return Response(trainee_data, status=status.HTTP_200_OK)
+        try:
+            trainee = Trainee.objects.get(gym=gym, user=user, trainer=trainer)
+            return Response({"error": "Trainee already exist"}, status=status.HTTP_400_BAD_REQUEST)
+        except Trainer.DoesNotExist:    
+            trainee = Trainee(**data)
+            trainee.save()
+            trainee_data = TraineeSieralizer(trainee).data 
+            return Response(trainee_data, status=status.HTTP_200_OK)
+        
 
 class DietAndWorkoutViewSet(ModelViewSet):
     queryset = DietAndWorkout.objects.all()
@@ -77,13 +85,17 @@ class MyDietAndWorkout(APIView):
 
         trainee = Trainee.objects.get(user=request.user)
 
-        diet_workout = DietAndWorkout.objects.get(trainee=trainee)
+        diet_workout = DietAndWorkout.objects.filter(trainee=trainee)
 
-        response_data = DietAndWorkOutSerializer(diet_workout, context={"request": request}).data
+        if len(diet_workout) != 0:
+            diet_workout = diet_workout[0]
+            response_data = DietAndWorkOutSerializer(diet_workout, context={"request": request}).data
+        else:
+            response_data = []
 
-        response_data["Trainer_name"] = diet_workout.trainer.user.firstname + " " + diet_workout.trainer.user.lastname
-
-        response_data["Gym"] = diet_workout.trainer.gym.name
+        if len(response_data) != 0:
+            response_data["Trainer_name"] = diet_workout.trainer.user.firstname + " " + diet_workout.trainer.user.lastname
+            response_data["Gym"] = diet_workout.trainer.gym.name
 
         return Response(response_data, status=status.HTTP_200_OK)
 
