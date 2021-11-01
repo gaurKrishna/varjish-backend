@@ -36,6 +36,13 @@ class TrainerViewset(ModelViewSet):
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'post']
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        response_data = self.get_serializer(instance).data
+        user_data = UserSerializer(instance.user).data
+        response_data = {**response_data, **user_data}
+        return Response(response_data, status=status.HTTP_200_OK)
+
 class TraineeViewSet(ModelViewSet):
     queryset = Trainee.objects.all()
     serializer_class = TraineeSieralizer
